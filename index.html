@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Measurement Chart</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 20px;
+        }
+        canvas {
+            max-width: 100%;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<body>
+    <h2>Your Measurement History</h2>
+    <canvas id="myChart"></canvas>
+
+    <script>
+        // Получаем данные из WebAppData
+        const webAppData = window.Telegram.WebApp.initDataUnsafe;
+        const measurements = JSON.parse(webAppData?.query_id || '[]');
+
+        const labels = measurements.map(item => item.date);
+        const pulseData = measurements.map(item => item.pulse);
+        const sdnnData = measurements.map(item => item.sdnn);
+
+        // Создаем график с данными
+        const ctx = document.getElementById('myChart').getContext('2d');
+        const myChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [
+                    {
+                        label: 'Pulse',
+                        data: pulseData,
+                        borderColor: 'rgba(255, 99, 132, 1)',
+                        borderWidth: 1
+                    },
+                    {
+                        label: 'SDNN',
+                        data: sdnnData,
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        borderWidth: 1
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
