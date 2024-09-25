@@ -36,6 +36,11 @@
         const encodedData = getParameterByName('data');
         const measurements = JSON.parse(decodeURIComponent(encodedData || '[]'));
 
+        
+        console.log("window.location.href:", window.location.href);
+
+
+        
         // Лог для отладки данных
         console.log("Received measurements:", measurements);
 
