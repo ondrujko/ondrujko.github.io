@@ -22,7 +22,7 @@
     <canvas id="myChart"></canvas>
 
     <script>
-        // Функция для извлечения данных из URL параметров
+        // Функция для извлечения и декодирования параметров из URL
         function getParameterByName(name, url = window.location.href) {
             name = name.replace(/[\[\]]/g, '\\$&');
             const regex = new RegExp(`[?&]${name}(=([^&#]*)|&|#|$)`),
@@ -32,9 +32,9 @@
             return decodeURIComponent(results[2].replace(/\+/g, ' '));
         }
 
-        // Получаем данные из параметра 'data' в URL
-        const data = getParameterByName('data');
-        const measurements = JSON.parse(data || '[]');
+        // Извлекаем закодированные данные из параметра 'data' в URL
+        const encodedData = getParameterByName('data');
+        const measurements = JSON.parse(decodeURIComponent(encodedData || '[]'));
 
         // Лог для отладки данных
         console.log("Received measurements:", measurements);
