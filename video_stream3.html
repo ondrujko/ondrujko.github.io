@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Camera Stream</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+        video {
+            width: 80%;
+            max-width: 600px;
+            border: 2px solid #333;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: white;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <video autoplay></video>
+    <button id="toggleCamera">Переключить камеру</button>
+
+    <script>
+        let useFrontCamera = true;
+
+        // Функция для запуска камеры
+        async function startCamera(useFrontCamera = true) {
+            const constraints = {
+                video: {
+                    facingMode: useFrontCamera ? "user" : "environment"
+                }
+            };
+
+            try {
+                // Получение видеопотока с камеры
+                const stream = await navigator.mediaDevices.getUserMedia(constraints);
+                const videoElement = document.querySelector('video');
+                videoElement.srcObject = stream;
+                videoElement.play();
+            } catch (error) {
+                console.error("Ошибка доступа к камере:", error);
+                alert("Не удалось получить доступ к камере. Проверьте настройки браузера.");
+            }
+        }
+
+        // Обработчик для переключения камеры
+        document.getElementById("toggleCamera").addEventListener("click", () => {
+            useFrontCamera = !useFrontCamera;
+            startCamera(useFrontCamera);
+        });
+
+        // Запуск камеры при загрузке страницы
+        startCamera(useFrontCamera);
+    </script>
+</body>
+</html>
