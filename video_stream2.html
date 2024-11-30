@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Camera Stream</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script> <!-- Подключение Telegram SDK -->
+</head>
+<body>
+    <h1>Камера в Telegram</h1>
+    <video id="video" autoplay playsinline style="width: 100%; height: auto;"></video>
+
+    <script>
+        async function startCamera() {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+                const video = document.getElementById("video");
+                video.srcObject = stream;
+            } catch (error) {
+                console.error("Ошибка доступа к камере:", error);
+                alert("Не удалось получить доступ к камере. Проверьте настройки браузера.");
+            }
+        }
+        startCamera();
+
+        // Telegram WebApp интеграция
+        Telegram.WebApp.ready(); // Telegram сообщает, что WebApp загружен
+        Telegram.WebApp.expand(); // Расширяет WebApp на весь экран
+
+        // Обработка события клика по кнопке в Telegram
+        Telegram.WebApp.onEvent("mainButtonClicked", () => {
+            const video = document.getElementById("video");
+            if (video.srcObject) {
+                Telegram.WebApp.sendData("Камера активирована!");
+            } else {
+                Telegram.WebApp.sendData("Камера не работает!");
+            }
+        });
+    </script>
+</body>
+</html>
