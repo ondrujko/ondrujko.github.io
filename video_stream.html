@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Camera Stream</title>
+</head>
+<body>
+    <h1>Камера в Telegram</h1>
+    <video id="video" autoplay playsinline style="width: 100%; height: auto;"></video>
+    <script>
+        async function startCamera() {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+                const video = document.getElementById("video");
+                video.srcObject = stream;
+            } catch (error) {
+                console.error("Ошибка доступа к камере:", error);
+                alert("Не удалось получить доступ к камере. Проверьте настройки браузера.");
+            }
+        }
+        startCamera();
+    </script>
+</body>
+</html>
